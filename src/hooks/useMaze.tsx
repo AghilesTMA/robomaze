@@ -7,9 +7,9 @@ const useMaze = (mazeSize: number) => {
     X: 1,
     Y: 1,
   });
-
   
-  return { maze, setMaze, currentCell };
+  
+  return { maze, setMaze, currentCell,setCurrentCell };
 };
 
 export default useMaze;

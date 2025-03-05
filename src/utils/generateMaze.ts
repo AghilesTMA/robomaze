@@ -1,3 +1,6 @@
+function isValidCell(x: number, y: number, mazeSize: number): boolean {
+  return x > 0 && x < mazeSize - 1 && y > 0 && y < mazeSize - 1;
+}
 export const generateMaze = (mazeSize: number): string[][] => {
   const mazeGrid = Array.from({ length: mazeSize }, () =>
     Array(mazeSize).fill("1")
@@ -18,10 +21,6 @@ export const generateMaze = (mazeSize: number): string[][] => {
     return array;
   }
 
-  function isValidCell(x: number, y: number): boolean {
-    return x > 0 && x < mazeSize - 1 && y > 0 && y < mazeSize - 1;
-  }
-
   function carvePassage(currentX: number, currentY: number) {
     mazeGrid[currentX][currentY] = 0;
 
@@ -33,7 +32,7 @@ export const generateMaze = (mazeSize: number): string[][] => {
       const wallY = currentY + deltaY / 2;
 
       if (
-        isValidCell(nextCellX, nextCellY) &&
+        isValidCell(nextCellX, nextCellY, mazeSize) &&
         mazeGrid[nextCellX][nextCellY] === "1"
       ) {
         mazeGrid[wallX][wallY] = "0";
@@ -42,5 +41,37 @@ export const generateMaze = (mazeSize: number): string[][] => {
     }
   }
   carvePassage(1, 1);
+  mazeGrid[1][1] = "B";
+  setTarget(mazeGrid);
   return mazeGrid;
+};
+
+const setTarget = (maze: string[][]) => {
+  const expanded: { x: number; y: number }[] = [{ x: 1, y: 1 }];
+  const visited: { x: number; y: number }[] = [];
+  const mazeSize = maze[0].length;
+
+  while (expanded.length > 0) {
+    let curr = expanded.shift();
+    if (curr) {
+      visited.push(curr);
+      const neighbors = [
+        { x: curr.x + 1, y: curr.y },
+        { x: curr.x, y: curr.y + 1 },
+        { x: curr.x, y: curr.y - 1 },
+        { x: curr.x - 1, y: curr.y },
+      ];
+      neighbors.forEach((cell) => {
+        if (
+          isValidCell(cell.x, cell.y, mazeSize) &&
+          maze[cell.x][cell.y] !== "1" &&
+          !visited.some((v) => v.x === cell.x && v.y === cell.y)
+        ) {
+          expanded.push(cell);
+        }
+      });
+    }
+  }
+  const target = visited[visited.length - 1];
+  maze[target.x][target.y] = "E";
 };
