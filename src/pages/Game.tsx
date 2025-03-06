@@ -138,6 +138,120 @@ const Game = () => {
     }
   };
 
+  const AStarAlgorithm = () => {
+    // Initit 
+    const visited: { x: number; y: number }[] = []; // nodes already evaluated 
+    const openSet: { x: number; y: number; f: number; g: number; h: number }[] = [];// nodees to be evaluated
+    const parents = new Map(); // for backtracking 
+    const gScore = new Map(); // cost from srart 
+    const fScore = new Map(); // stores f = g  +  h
+    
+    // Find End (x,y)
+    let endPosition = { x: 0, y: 0 };
+    for (let i = 0; i < maze.length; i++) {
+      for (let j = 0; j < maze[i].length; j++) {
+        if (maze[i][j] === "E") {
+          endPosition = { x: i, y: j };
+
+          break;
+        }
+      }
+    }
+    
+    // Heuristic function (Manhattan distance) 
+    // calculate with the law of |x1-x2| + |y1-y2}
+    // usees the endPosition to calculate it 
+    const heuristic = (x: number, y: number) => {
+      return Math.abs(x - endPosition.x) + Math.abs(y - endPosition.y);
+    };
+    
+    // set up for start node (parents = null , g = 0 , calulate h )
+    const start = { x: 1, y: 1 };
+    const startKey = `1 1`; 
+    parents.set(startKey, null);
+    gScore.set(startKey, 0);
+    const h = heuristic(start.x, start.y);
+    const g = 0; 
+    fScore.set(startKey, h+g );
+    openSet.push({ x: start.x, y: start.y, f: h, g: 0, h });
+    
+    let found = false;
+    
+    // Loop
+    while (openSet.length > 0 && !found) {
+      // Sort by fScore 
+      openSet.sort((a, b) => a.f - b.f);
+      
+      // Get the node with lowest fScore
+      const current = openSet.shift()!;
+      const currentKey = `${current.x} ${current.y}`;
+      
+      // Add to visited list
+      visited.push({ x: current.x, y: current.y });
+      
+      // Check if we reached the end
+      if (maze[current.x][current.y] === "E") {
+        found = true;
+        break;
+      }
+      
+      // neighbors
+      const neighbors = [
+        { x: current.x + 1, y: current.y },
+        { x: current.x, y: current.y + 1 },
+        { x: current.x, y: current.y - 1 },
+        { x: current.x - 1, y: current.y },
+      ];
+      
+      for (const neighbor of neighbors) {
+        // Skip if not valid or is a wall
+        if (
+          !isValidCell(neighbor.x, neighbor.y, maze[0].length) ||
+          maze[neighbor.x][neighbor.y] === "1"
+        ) {
+          continue;
+        }
+        
+        const neighborKey = `${neighbor.x} ${neighbor.y}`;
+        
+        // Calculate new gScore
+        const new_gScore = gScore.get(currentKey) + 1;
+        
+        // If this path is better than previous one
+        if (!gScore.has(neighborKey) || new_gScore < gScore.get(neighborKey)) {
+          // Update path and scores
+          parents.set(neighborKey, { x: current.x, y: current.y });
+          gScore.set(neighborKey, new_gScore);
+          const h = heuristic(neighbor.x, neighbor.y);
+          const f = new_gScore + h;
+          fScore.set(neighborKey, f);
+          
+          // Add to open set if not already there
+          if (!openSet.some(node => node.x === neighbor.x && node.y === neighbor.y)) {
+            openSet.push({
+              x: neighbor.x,
+              y: neighbor.y,
+              f,
+              g: new_gScore,
+              h
+            });
+          }
+        }
+      }
+    }
+    
+    // Construct solution path
+    if (found) {
+      const solutionPath = [];
+      let last = visited[visited.length - 1];
+      while (last !== null) {
+        solutionPath.unshift(last);
+        last = parents.get(`${last.x} ${last.y}`);
+      }
+      setSolutionPath(solutionPath);
+      setVisitedCells(visited);
+    }
+  };
 
 
   useEffect(() => {
@@ -150,6 +264,10 @@ const Game = () => {
     if(selectedAlgorithm === "DFS") {
       DfsAlgorithm();
     }
+    if(selectedAlgorithm === "A*") {
+      AStarAlgorithm();
+    }
+    
   }, [selectedAlgorithm]);
 
   return (
@@ -172,7 +290,6 @@ const Game = () => {
               </li>
             ))}
           </ul>
-          {selectedAlgorithm === "A*" && <span className=" text-red-400 font-medium text-xl">Under construction</span>}
         </div>
 
         {/* Actions section  */}
