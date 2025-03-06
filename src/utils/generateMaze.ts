@@ -1,4 +1,4 @@
-function isValidCell(x: number, y: number, mazeSize: number): boolean {
+export function isValidCell(x: number, y: number, mazeSize: number): boolean {
   return x > 0 && x < mazeSize - 1 && y > 0 && y < mazeSize - 1;
 }
 export const generateMaze = (mazeSize: number): string[][] => {
