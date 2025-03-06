@@ -1,7 +1,8 @@
+import { Link } from "react-router"
 
 const Home = () => {
   return (
-    <div>Home</div>
+    <Link to="/game">Go to Game</Link>
   )
 }
 
