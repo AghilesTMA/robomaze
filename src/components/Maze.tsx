@@ -20,7 +20,7 @@ const Maze = ({
         <div className=" flex" key={rowIdx}>
           {row.map((column, colIdx) => (
             <div
-              className={` aspect-square min-w-6  md:min-w-8 flex justify-center items-center   ${
+              className={` aspect-square w-6 min-w-6 md:min-w-8  md:w-8 flex justify-center items-center   ${
                 (column === "1" && "bg-gray-600") || " border"
               }
                 ${maze[rowIdx][colIdx] === "B" && "bg-white"}
@@ -35,10 +35,10 @@ const Maze = ({
               key={colIdx}
             >
               {currentCell?.X === rowIdx && currentCell.Y === colIdx && (
-                <Icon name="robot" className=" text-xl md:text-2xl text-blue-700" />
+                <Icon name="robot" className=" text-xl  text-blue-700" />
               )}
               {maze[rowIdx][colIdx] === "E" && (
-                <Icon name="target" className=" text-xl md:text-2xl text-red-500" />
+                <Icon name="target" className=" text-xl  text-red-500" />
               )}
             </div>
           ))}

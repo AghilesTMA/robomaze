@@ -345,37 +345,53 @@ const Game = () => {
   }, [selectedAlgorithm]);
 
   return (
-    <div className=" flex flex-col lg:flex-row gap-2 justify-between px-4 md:px-8 py-4">
-      <div className=" flex flex-col gap-2 w-full md:w-fit">
-        {/* Algorithms section  */}
-        <div className=" flex gap-2 flex-col">
-          <h2 className=" font-semibold text-2xl">Algorithm</h2>
-          <ul className=" flex gap-2 ">
-            {algorithms.map((algorithm) => (
-              <li key={algorithm}>
+    <div className="min-h-screen bg-gray-50 p-4 md:p-6">
+      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-6 justify-between">
+        <div className="bg-white rounded-xl shadow-md p-6 w-full lg:w-1/3 lg:sticky lg:top-6 lg:self-start">
+          <h1 className="text-3xl font-bold text-gray-800 mb-6 border-b pb-3">
+            Maze Solver
+          </h1>
+
+          {/* Algorithms section */}
+          <div className="mb-8">
+            <h2 className="font-semibold text-xl text-gray-700 mb-3">
+              Algorithm
+            </h2>
+            <div className="flex flex-wrap gap-2">
+              {algorithms.map((algorithm) => (
                 <Button
+                  key={algorithm}
                   disabled={simulationRunning}
                   text={algorithm}
-                  className={`hover:bg-white ${
-                    selectedAlgorithm === algorithm && "bg-white"
+                  className={`px-4 py-2 rounded-lg transition-all ${
+                    selectedAlgorithm === algorithm
+                      ? "bg-blue-600 text-white shadow-md"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                   }`}
                   action={() => setSelectedAlgorithm(algorithm)}
                 />
-              </li>
-            ))}
-          </ul>
-        </div>
+              ))}
+            </div>
+          </div>
 
-        {/* Actions section  */}
-        <div className=" flex gap-2 flex-col">
-          <h2 className=" font-semibold text-2xl">Actions</h2>
-          <ul className=" flex gap-2 ">
-            {actions.map((action) => (
-              <li key={action}>
+          {/* Actions section */}
+          <div className="mb-8">
+            <h2 className="font-semibold text-xl text-gray-700 mb-3">
+              Actions
+            </h2>
+            <div className="flex flex-wrap gap-2">
+              {actions.map((action) => (
                 <Button
+                  key={action}
                   text={action}
                   disabled={simulationRunning}
-                  className=" hover:bg-white"
+                  className={`px-4 py-2 rounded-lg transition-all ${
+                    action === "Run Simulation"
+                      ? "bg-green-600 text-white hover:bg-green-700"
+                      : "bg-red-500 text-white hover:bg-red-600"
+                  } ${
+                    simulationRunning ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
                   action={() => {
                     if (action === "Reset") {
                       resetAction();
@@ -385,57 +401,55 @@ const Game = () => {
                     }
                   }}
                 />
-              </li>
-            ))}
-          </ul>
+              ))}
+            </div>
+          </div>
+
+          {/* Legend */}
+          <div className="mb-8">
+            <h2 className="font-semibold text-xl text-gray-700 mb-3">Legend</h2>
+            <div className="grid grid-cols-2 gap-3 bg-gray-50 p-4 rounded-lg">
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 rounded-md bg-gray-600"></div>
+                <span className="text-gray-700">Wall</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 rounded-md bg-white border border-gray-300"></div>
+                <span className="text-gray-700">Start</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 rounded-md bg-green-200"></div>
+                <span className="text-gray-700">Solution Path</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 rounded-md bg-blue-200"></div>
+                <span className="text-gray-700">Visited Cells</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 rounded-md bg-red-500"></div>
+                <span className="text-gray-700">Target</span>
+              </div>
+            </div>
+          </div>
+
+          <Link
+            to="/"
+            className="inline-block text-blue-600 hover:text-blue-800 font-medium transition-colors"
+          >
+            ← Back to Home
+          </Link>
         </div>
 
-        {/* Keys  */}
-        <ul>
-          <li>
-            <div className=" flex gap-2 items-center">
-              <div className=" w-8 h-8 bg-gray-600"></div>
-              <span>Wall</span>
-            </div>
-          </li>
-          <li>
-            <div className=" flex gap-2 items-center">
-              <div className=" w-8 h-8 bg-white"></div>
-              <span>Start</span>
-            </div>
-          </li>
-          <li>
-            <div className=" flex gap-2 items-center">
-              <div className=" w-8 h-8 bg-green-200"></div>
-              <span>Solution Path</span>
-            </div>
-          </li>
-          <li>
-            <div className=" flex gap-2 items-center">
-              <div className=" w-8 h-8 bg-blue-200"></div>
-              <span>Visited Cells</span>
-            </div>
-          </li>
-          <li>
-            <div className=" flex gap-2 items-center">
-              <div className=" w-8 h-8 bg-red-500"></div>
-              <span>Target</span>
-            </div>
-          </li>
-        </ul>
-
-        <h2 className=" font-semibold text-blue-700 underline">
-          <Link to="/">Go Home</Link>
-        </h2>
-      </div>
-
-      <div className=" max-w-screen md:max-w-[650px] overflow-auto">
-        <Maze
-          maze={maze}
-          currentCell={currentCell}
-          solutionPath={solutionPath}
-          visitedPath={visitedCells}
-        />
+        <div className="bg-white flex items-center justify-center rounded-xl shadow-md p-4 w-full ">
+          <div className="overflow-auto">
+            <Maze
+              maze={maze}
+              currentCell={currentCell}
+              solutionPath={solutionPath}
+              visitedPath={visitedCells}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
