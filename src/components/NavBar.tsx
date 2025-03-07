@@ -15,7 +15,7 @@ const NavBar = () => {
         <Button
           text="GitHub"
           href="https://github.com/AghilesTMA/robomaze"
-          icon="github"
+          icon="Src Code"
           className="bg-gray-200 text-gray-700 hover:bg-gray-300"
         />
       </div>
