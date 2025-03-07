@@ -5,7 +5,9 @@ function App() {
   return (
     <div className=" bg-slate-200 min-h-screen">
       <NavBar />
-      <Router />
+      <div className=" overflow-auto">
+        <Router />
+      </div>
     </div>
   );
 }

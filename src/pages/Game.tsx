@@ -345,8 +345,8 @@ const Game = () => {
   }, [selectedAlgorithm]);
 
   return (
-    <div className=" flex  justify-between px-8 py-4">
-      <div className=" flex flex-col gap-2 w-full">
+    <div className=" flex flex-col lg:flex-row gap-2 justify-between px-4 md:px-8 py-4">
+      <div className=" flex flex-col gap-2 w-full md:w-fit">
         {/* Algorithms section  */}
         <div className=" flex gap-2 flex-col">
           <h2 className=" font-semibold text-2xl">Algorithm</h2>
@@ -429,7 +429,7 @@ const Game = () => {
         </h2>
       </div>
 
-      <div>
+      <div className=" max-w-screen md:max-w-[650px] overflow-auto">
         <Maze
           maze={maze}
           currentCell={currentCell}
