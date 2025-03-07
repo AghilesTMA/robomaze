@@ -39,7 +39,7 @@ const Home = () => {
           </h2>
           <p className="text-gray-700 mb-4">
             This website is an assignment for the Introduction to AI course
-            taught by Professor Soumaia Lekhali. It demonstrates practical
+            taught by Professor Somia Lekehali. It demonstrates practical
             applications of fundamental AI search algorithms through an
             interactive maze solver.
           </p>
@@ -50,8 +50,8 @@ const Home = () => {
           <div className="bg-gray-50 p-4 rounded-lg mb-6">
             <p className="text-gray-700">
               <span className="font-medium">Tamendjari Mohamed Aghilas</span>{" "}
-              and <span className="font-medium">Kara Mortada</span> from Group
-              1CS6
+              and <span className="font-medium">Kara Mohammed Mourtadha</span>{" "}
+              from Group 1CS6
             </p>
           </div>
 
