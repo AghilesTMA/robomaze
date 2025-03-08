@@ -13,9 +13,9 @@ const NavBar = () => {
       </Link>
       <div className="flex gap-3">
         <Button
-          text="GitHub"
+          text="Src Code"
           href="https://github.com/AghilesTMA/robomaze"
-          icon="Src Code"
+          icon="github"
           className="bg-gray-200 text-gray-700 hover:bg-gray-300"
         />
       </div>
